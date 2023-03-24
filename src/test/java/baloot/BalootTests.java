@@ -2,10 +2,7 @@ package baloot;
 
 import baloot.database.Database;
 import baloot.database.Table;
-import baloot.repository.BuyListRepository;
-import baloot.repository.CommodityRepository;
-import baloot.repository.ProviderRepository;
-import baloot.repository.UserRepository;
+import baloot.repository.*;
 import baloot.factory.BasicFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,6 +15,7 @@ public class BalootTests {
     protected UserRepository userRepository;
     protected CommodityRepository commodityRepository;
     protected BuyListRepository buyListRepository;
+    protected CommentRepository commentRepository;
 
     @BeforeAll
     public void setUp() {
@@ -26,13 +24,15 @@ public class BalootTests {
                 new Table("users"),
                 new Table("providers"),
                 new Table("commodities"),
-                new Table("buyListItems")
+                new Table("buyListItems"),
+                new Table("comments")
             )
         );
         this.providerRepository = new ProviderRepository(db);
         this.userRepository = new UserRepository(db);
         this.commodityRepository = new CommodityRepository(db);
         this.buyListRepository = new BuyListRepository(db);
+        this.commentRepository = new CommentRepository(db);
 
         new BasicFactory(
             this.userRepository,

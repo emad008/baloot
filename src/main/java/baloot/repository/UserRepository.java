@@ -21,6 +21,12 @@ public class UserRepository extends Repository<User> {
        return this.findInstance(Map.of("username", username));
     }
 
+    public User findByEmail(String email) throws EntityNotFound {
+        return this.findInstance(Map.of(
+            "email", email
+        ));
+    }
+
     @Override
     public User convertRawDataToModel(Map<String, Object> rawData) {
         return new User(

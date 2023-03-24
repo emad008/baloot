@@ -30,7 +30,8 @@ public class BuyListTests extends BalootTests {
             this.buyListRepository,
             new BuyListService(
                 this.buyListRepository,
-                this.commodityRepository
+                this.commodityRepository,
+                this.userRepository
             )
         );
     }

@@ -1,4 +1,4 @@
 package baloot.exception;
 
-public class MultipleObjectsReturned extends RuntimeException {
+public class MultipleObjectsReturned extends BalootException {
 }

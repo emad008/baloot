@@ -9,15 +9,15 @@ public class Commodity extends Model {
     private int id, inStock, providerId, price;
     private String name;
     private List<String> categories;
-    private Map<String, Integer> scores;
+    private Map<String, Float> scores;
 
-    public void init(
+    public Commodity(
         int id,
         String name,
         int providerId,
         int price,
         List<String> categories,
-        Map<String, Integer> scores,
+        Map<String, Float> scores,
         int inStock
     ) {
         this.id = id;
@@ -35,29 +35,9 @@ public class Commodity extends Model {
         int providerId,
         int price,
         List<String> categories,
-        Map<String, Integer> scores,
         int inStock
     ) {
-        this.init(
-            id,
-            name,
-            providerId,
-            price,
-            categories,
-            scores,
-            inStock
-        );
-    }
-
-    public Commodity(
-        int id,
-        String name,
-        int providerId,
-        int price,
-        List<String> categories,
-        int inStock
-    ) {
-        this.init(
+        this(
             id,
             name,
             providerId,
@@ -70,7 +50,7 @@ public class Commodity extends Model {
 
     public boolean isSame(int id) { return id == this.id; }
 
-    public void updateScore(String username, int score) {
+    public void updateScore(String username, float score) {
         this.scores.put(username, score);
     }
 
@@ -80,14 +60,6 @@ public class Commodity extends Model {
 
     public void increaseStock(int count) {
         this.inStock += count;
-    }
-    public boolean isSameCategory(String category) {
-        for (String _category : categories) {
-            if (_category.equals(category)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int getProviderId() {
@@ -113,13 +85,13 @@ public class Commodity extends Model {
     public float getRating() {
         int sumScores = 0;
 
-        for (Integer score: this.scores.values())
+        for (Float score: this.scores.values())
             sumScores += score;
 
         return this.scores.size() > 0 ? (float) sumScores / this.scores.size() : 0;
     }
 
-    public Map<String, Integer> getScores() {
+    public Map<String, Float> getScores() {
         return this.scores;
     }
 

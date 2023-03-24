@@ -20,6 +20,21 @@ public class CommodityRepository extends Repository<Commodity> {
         ));
     }
 
+    public List<Commodity> listByPriceRange(int startPrice, int endPrice) {
+        // TODO. database should handle '<=' and '>=' filters but for now, we will get all rows and search manually
+
+        List<Commodity> result = new ArrayList<>();
+        for (Commodity commodity: this.list())
+            if (startPrice <= commodity.getPrice() && commodity.getPrice() <= endPrice)
+                result.add(commodity);
+
+        return result;
+    }
+
+    public List<Commodity> listByProviderId(int providerId) {
+        return this.list(Map.of("providerId", providerId));
+    }
+
     public List<Commodity> listByCategory(String category) {
         // TODO. database should handle 'in' filter but for now, we will get all rows and search manually
         List<Commodity> commodities = this.list();
@@ -46,7 +61,7 @@ public class CommodityRepository extends Repository<Commodity> {
             (Integer) rawData.get("providerId"),
             (Integer) rawData.get("price"),
             (List<String>) rawData.get("categories"),
-            (Map<String, Integer>) rawData.get("scores"),
+            (Map<String, Float>) rawData.get("scores"),
             (Integer) rawData.get("inStock")
         );
     }

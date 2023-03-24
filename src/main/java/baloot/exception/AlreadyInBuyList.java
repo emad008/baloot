@@ -1,6 +1,6 @@
 package baloot.exception;
 
-public class AlreadyInBuyList extends RuntimeException {
+public class AlreadyInBuyList extends BalootException {
     private String username;
     private String commodityName;
 

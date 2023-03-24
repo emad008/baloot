@@ -1,20 +1,33 @@
 package baloot.controller;
 
+import baloot.model.Comment;
 import baloot.model.Commodity;
 import baloot.model.User;
+import baloot.repository.BuyListRepository;
+import baloot.repository.CommentRepository;
 import baloot.repository.CommodityRepository;
+import baloot.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CommodityController {
     private final CommodityRepository commodityRepository;
+    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
-    public CommodityController(CommodityRepository commodityRepository) {
+    public CommodityController(
+        CommodityRepository commodityRepository,
+        CommentRepository commentRepository,
+        UserRepository userRepository
+    ) {
         this.commodityRepository = commodityRepository;
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     public JSONObject addCommodity(JSONObject commodityData) {
@@ -65,8 +78,9 @@ public class CommodityController {
 
     public JSONObject rateCommodity(JSONObject rateCommodityData) {
         Commodity commodity = this.commodityRepository.findById(rateCommodityData.getInt("commodityId"));
+        User user = this.userRepository.findByUsername(rateCommodityData.getString("username"));
         commodity.updateScore(
-            rateCommodityData.getString("username"),
+            user.getUsername(),
             rateCommodityData.getInt("score")
         );
         this.commodityRepository.save(commodity);
@@ -74,11 +88,26 @@ public class CommodityController {
     }
 
     public JSONObject getCommodityById(JSONObject commodityData) {
-        return new JSONObject(
+        JSONObject res = new JSONObject(
             this.commodityRepository.findById(
                 commodityData.getInt("id")
             ).describe()
         );
+
+        List<Map<String, Object>> comments = new ArrayList();
+
+        for (Comment comment: this.commentRepository.listByCommodityId(
+            commodityData.getInt("id")
+        )) {
+            Map<String, Object> description = new HashMap<>(comment.describe());
+            User user = this.userRepository.findByEmail(comment.getUserEmail());
+            description.put("user", user.describe());
+            comments.add(description);
+        }
+
+        res.put("comments", comments);
+
+        return res;
     }
 
     public JSONObject listCommoditiesByCategory(JSONObject categoryData) {
@@ -97,5 +126,28 @@ public class CommodityController {
         );
 
         return result;
+    }
+
+    public JSONObject listCommoditiesByPriceRange(JSONObject priceData) {
+        int startPrice = priceData.getInt("startPrice");
+        int endPrice = priceData.getInt("endPrice");
+
+        List<Commodity> commodities = this.commodityRepository.listByPriceRange(
+            startPrice,
+            endPrice
+        );
+
+        List<Map<String, Object>> commoditiesDescription = new ArrayList<>();
+
+        for (Commodity commodity: commodities)
+            commoditiesDescription.add(commodity.describe());
+
+        JSONObject res = new JSONObject();
+        res.put(
+            "commodities",
+            commoditiesDescription
+        );
+
+        return res;
     }
 }

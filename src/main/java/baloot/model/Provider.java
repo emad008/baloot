@@ -29,7 +29,10 @@ public class Provider extends Model {
 
     @Override
     public Map<String, Object> describe() {
-        Map<String, Object> res = new HashMap<>();
-        return res;
+        return Map.of(
+            "id", this.getId(),
+            "name", this.getName(),
+            "registerDate", this.getRegisterDate()
+        );
     }
 }

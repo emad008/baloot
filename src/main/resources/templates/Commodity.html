@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Commodity</title>
+    <style>
+      li {
+        padding: 5px;
+      }
+      table {
+        width: 50%;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+   
+    <ul>
+      <li id="id">Id: {{id}}</li>
+      <li id="name">Name: {{name}} </li>
+      <li id="providerId">Provider Id: {{providerId}} </li>
+      <li id="price">Price: {{price}} </li>
+      <li id="categories">
+        Categories:
+
+          {{#categories}}
+            {{.}},
+          {{/categories}}
+      </li>
+      <li id="rating">Rating: {{ rating }} </li>
+      <li id="inStock">In Stock: {{ inStock }}</li>
+    </ul>
+
+    <label>Your USERNAME:</label>
+    <input type="text" name="username" id="username" value="" />
+    <br><br>
+    <div>
+      <label>Rate (between 1 and 10):</label>
+      <input type="number" id="rate" name="rate" min="1" max="10">
+      <button id="rateButton" type="submit">Rate</button>
+    </div>
+    <script>
+       document.getElementById("rateButton").addEventListener("click", rateCommodity);
+
+        async function rateCommodity() {
+          let rate = document.getElementById("rate").value
+          let username = document.getElementById("username").value
+
+          const response = await fetch('/rateCommodity/' + username + '/' + {{id}} + '/' + rate, {
+            method: 'post',
+            body: {
+            }
+          });
+
+          window.location.href = "/" + response.status;
+        }
+    </script>
+    <br>
+    <form action="" method="POST">
+      <button id="addToBuylist" type="submit">Add to BuyList</button>
+    </form>
+    <script>
+       document.getElementById("addToBuylist").addEventListener("click", addToBuylist);
+
+        async function addToBuylist() {
+          let username = document.getElementById("username").value
+          const response = await fetch('/addToBuyList/' + username + '/' + {{id}}, {
+            method: 'post',
+            body: {
+            }
+          });
+
+          window.location.href = "/" + response.status;
+        }
+    </script>
+    <br />
+
+    <table>
+      <tr>
+        <th>username</th>
+        <th>comment</th>
+        <th>date</th>
+        <th></th>
+        <th></th>
+      </tr>
+      {{#comments}}
+      <tr>
+        <td>{{user.username}}</td>
+        <td>{{text}}</td>
+        <td>{{date}}</td>
+        <td>
+          <div>
+            <label for="">{{upVotes}}</label>
+            <input
+              id="form_comment_id"
+              type="hidden"
+              name="comment_id"
+              value="01"
+            />
+            <button id="likeButton_{{uuid}}" type="submit">like</button>
+          </div>
+          <script>
+             document.getElementById("likeButton_{{uuid}}").addEventListener("click", upVoteComment);
+
+              async function upVoteComment() {
+                let username = document.getElementById("username").value
+                const response = await fetch('/voteComment/' + username + '/' + "{{uuid}}" + '/' + 1, {
+                  method: 'post',
+                  body: {
+                  }
+                });
+
+                window.location.href = "/" + response.status;
+              }
+          </script>
+        </td>
+        <td>
+          <div action="" method="POST">
+            <label for="">{{downVotes}}</label>
+            <input
+              id="form_comment_id"
+              type="hidden"
+              name="comment_id"
+              value="01"
+            />
+            <button id="dislikeButton_{{uuid}}" type="submit">dislike</button>
+          </div>
+          <script>
+             document.getElementById("dislikeButton_{{uuid}}").addEventListener("click", downVoteComment);
+
+              async function downVoteComment() {
+                let username = document.getElementById("username").value
+                const response = await fetch('/voteComment/' + username + '/' + "{{uuid}}" + '/' + -1, {
+                  method: 'post',
+                  body: {
+                  }
+                });
+
+                window.location.href = "/" + response.status;
+              }
+          </script>
+        </td>
+      </tr>
+      {{/comments}}
+    </table>
+   
+  </body>
+</html>
+

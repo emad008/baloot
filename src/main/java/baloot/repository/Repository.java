@@ -28,11 +28,18 @@ public abstract class Repository <M extends Model> {
     public void save(M entity) {
         try {
             this.findInstance(entity.getKey());
-            this.getTable().update(entity.getKey(), this.convertModelToRawData(entity));
+            this.update(entity.getKey(), this.convertModelToRawData(entity));
         }
         catch (EntityNotFound ex) {
             this.insert(entity);
         }
+    }
+
+    public void update(
+        Map<String, Object> conditions,
+        Map<String, Object> newValues
+    ) {
+        this.getTable().update(conditions, newValues);
     }
 
     public void delete(M entity) {

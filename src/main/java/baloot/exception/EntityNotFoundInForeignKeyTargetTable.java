@@ -27,7 +27,7 @@ public class EntityNotFoundInForeignKeyTargetTable extends EntityNotFound {
     public String getMessage() {
         return "invalid id for foreign key " +
             this.foreignKeyName + " in table " + this.sourceTable + ". " +
-            ". cant find " + this.targetColumn + "=" + this.foreignKeyId +
+            "cant find " + this.targetColumn + "=" + this.foreignKeyId + " " +
             "in table " + this.getTableName() +
         '}';
     }

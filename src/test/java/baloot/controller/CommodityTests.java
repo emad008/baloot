@@ -22,7 +22,9 @@ public class CommodityTests extends BalootTests {
         super.setUp();
 
         this.commodityController = new CommodityController(
-            this.commodityRepository
+            this.commodityRepository,
+            this.commentRepository,
+            this.userRepository
         );
     }
 
@@ -53,7 +55,7 @@ public class CommodityTests extends BalootTests {
     public void duplicateRateCommodity() {
         //given
         this.commodityController.rateCommodity(new JSONObject(Map.of(
-            "username", "mamad",
+            "username", "shayan",
             "commodityId", 1,
             "score", 7
         )));
@@ -61,7 +63,7 @@ public class CommodityTests extends BalootTests {
 
         //when
         this.commodityController.rateCommodity(new JSONObject(Map.of(
-            "username", "mamad",
+            "username", "shayan",
             "commodityId", 1,
             "score", 7
         )));
@@ -128,5 +130,20 @@ public class CommodityTests extends BalootTests {
 
         //then
         assertEquals(res.length(), 0);
+    }
+
+    @Test
+    public void listCommoditiesByPriceRange() {
+        //given
+
+        //when
+        JSONArray res = this.commodityController.listCommoditiesByPriceRange(new JSONObject(Map.of(
+            "startPrice", 1,
+            "endPrice", 10
+        ))).getJSONArray("commodities");
+
+        //then
+        assertEquals(res.length(), 1);
+        assertEquals(res.getJSONObject(0).getString("name"), "atr");
     }
 }
