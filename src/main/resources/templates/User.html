@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User</title>
+    <style>
+        li {
+        	padding: 5px
+        }
+        table{
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <ul>
+        <li id="username">Username: {{username}}</li>
+        <li id="email">Email: {{email}}</li>
+        <li id="birthDate">Birth Date: {{birthDate}}</li>
+        <li id="address">{{address}}</li>
+        <li id="credit">
+            <div action="" method="POST" >
+                <label>
+                    Credit: {{credit}}
+                </label>
+                <input id="increaseAmount" style="margin-left: 10px; width: 100px" type="number">
+                <button id="addCredit" type="submit">Add Credit</button>
+            </div>
+            <script>
+                document.getElementById("addCredit").addEventListener("click", addCredit);
+
+                async function addCredit() {
+                  let credit = document.getElementById("increaseAmount").value
+                  const response = await fetch('/addCredit/' + "{{username}}" + '/' + credit, {
+                    method: 'post',
+                    body: {
+                    }
+                  });
+
+                  window.location.href = "/" + response.status;
+                }
+            </script>
+        </li>
+        <li>
+            <div action="" method="POST" >
+                <label>Buy List Payment</label>
+                <input id="form_payment" type="hidden" name="userId" value="Farhad">
+                <button id="purchaseBuyList" type="submit">Payment</button>
+            </div>
+            <script>
+                   document.getElementById("purchaseBuyList").addEventListener("click", purchaseBuyList);
+
+                    async function purchaseBuyList() {
+                      const response = await fetch('/purchaseBuyList/' + "{{username}}", {
+                        method: 'post',
+                        body: {
+                        }
+                      });
+
+                      window.location.href = "/" + response.status;
+                    }
+            </script>
+        </li>
+    </ul>
+    <table>
+        <caption>
+            <h2>Buy List</h2>
+        </caption>
+        <tr>
+            <th>Id</th> 
+            <th>Name</th> 
+            <th>Provider Id</th> 
+            <th>Price</th> 
+            <th>Categories</th> 
+            <th>Rating</th> 
+            <th>In Stock</th>
+            <th></th>
+            <th></th>
+        </tr>
+        {{#buyListItems}}
+        <tr>
+            <th>{{commodity.id}}</th>
+            <th>{{commodity.name}}</th>
+            <th>{{commodity.providerId}}</th>
+            <th>{{commodity.price}}</th>
+            <th>
+                {{#commodity.categories}}
+                    {{.}},
+                {{/commodity.categories}}
+            </th>
+            <th>{{commodity.rating}}</th>
+            <th>{{commodity.inStock}}</th>
+            <td><a href="/commodities/{{commodity.id}}">Link</a></td>
+            <td>        
+                <div>
+                    <input id="form_commodity_id" type="hidden" name="commodityId" value="2341">
+                    <button id="removeBuyListItem_{{commodity.id}}" type="submit">Remove</button>
+                </div>
+                <script>
+                   document.getElementById("removeBuyListItem_{{commodity.id}}").addEventListener("click", removeBuyListItem);
+
+                    async function removeBuyListItem() {
+                      const response = await fetch('/removeFromBuyList/' + "{{username}}" + '/' + {{commodity.id}}, {
+                        method: 'post',
+                        body: {
+                        }
+                      });
+
+                      window.location.href = "/" + response.status;
+                    }
+                </script>
+            </td>
+        </tr>
+        {{/buyListItems}}
+    </table>
+    <br>
+    <table>
+        <caption><h2>Purchased List</h2></caption>
+        <tr>
+            <th>Id</th> 
+            <th>Name</th> 
+            <th>Provider Id</th> 
+            <th>Price</th> 
+            <th>Categories</th> 
+            <th>Rating</th> 
+            <th>In Stock</th>
+            <th></th>
+        </tr>
+        {{#purchasedListItems}}
+        <tr>
+            <th>{{commodity.id}}</th>
+            <th>{{commodity.name}}</th>
+            <th>{{commodity.providerId}}</th>
+            <th>{{commodity.price}}</th>
+            <th>
+                {{#commodity.categories}}
+                    {{.}},
+                {{/commodity.categories}}
+            </th>
+            <th>{{commodity.rating}}</th>
+            <th>{{commodity.inStock}}</th>
+            <td><a href="/commodities/{{commodity.id}}">Link</a></td>
+        </tr>
+        {{/purchasedListItems}}
+    </table>
+</body>
+</html>

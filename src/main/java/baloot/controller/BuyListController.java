@@ -88,4 +88,12 @@ public class BuyListController {
 
         return response;
     }
+
+    public JSONObject purchaseAll(JSONObject userData) {
+        User user = this.userRepository.findByUsername(userData.getString("username"));
+
+        this.buyListService.purchaseBuyList(user);
+
+        return new JSONObject();
+    }
 }

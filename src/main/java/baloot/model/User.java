@@ -47,8 +47,12 @@ public class User extends Model {
         this.address = address;
     }
 
-    public void setCredit(int credit) {
-        this.credit = credit;
+    public void decreaseCredit(int creditChange) {
+        this.credit -= creditChange;
+    }
+
+    public void increaseCredit(int creditChange) {
+        this.credit += creditChange;
     }
 
     public String getUsername() {
@@ -82,7 +86,12 @@ public class User extends Model {
 
     @Override
     public Map<String, Object> describe() {
-        Map<String, Object> res = new HashMap<>();
-        return res;
+        return Map.of(
+            "username", this.getUsername(),
+            "email", this.getEmail(),
+            "birthDate", this.getBirthDate(),
+            "address", this.getAddress(),
+            "credit", this.getCredit()
+        );
     }
 }

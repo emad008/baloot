@@ -16,15 +16,35 @@ public class BuyListRepository extends Repository<BuyListItem> {
 
     public List<BuyListItem> listByUsername(String username) {
         return this.list(Map.of(
-            "username", username
+            "username", username,
+            "isPurchased", false
         ));
+    }
+
+    public List<BuyListItem> listPurchasedByUsername(String username) {
+        return this.list(Map.of(
+            "username", username,
+            "isPurchased", true
+        ));
+    }
+
+    public void purchaseAllUserBuyList(String username) {
+        this.update(
+            Map.of(
+                "username", username
+            ),
+            Map.of(
+                "isPurchased", true
+            )
+        );
     }
 
     @Override
     public BuyListItem convertRawDataToModel(Map<String, Object> rawDataList) {
         return new BuyListItem(
-            (String) rawDataList.get("userId"),
-            (Integer) rawDataList.get("commodityId")
+            (String) rawDataList.get("username"),
+            (Integer) rawDataList.get("commodityId"),
+            (Boolean) rawDataList.get("isPurchased")
         );
     }
 
@@ -32,7 +52,8 @@ public class BuyListRepository extends Repository<BuyListItem> {
     public Map<String, Object> convertModelToRawData(BuyListItem buyListItem) {
         return Map.of(
             "username", buyListItem.getUsername(),
-            "commodityId", buyListItem.getCommodityId()
+            "commodityId", buyListItem.getCommodityId(),
+            "isPurchased", buyListItem.getPurchased()
         );
     }
 
@@ -57,6 +78,11 @@ public class BuyListRepository extends Repository<BuyListItem> {
             false,
             this.db.getTable("commodities"),
             this.db.getTable("commodities").getColumn("id")
+        ));
+        table.addColumn(new Column(
+            table,
+            "isPurchased",
+            false
         ));
     }
 }

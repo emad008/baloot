@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Commodities</title>
+    <style>
+        table{
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th> 
+            <th>Provider Id</th>
+            <th>Price</th>
+            <th>Categories</th>
+            <th>Rating</th>
+            <th>In Stock</th>
+            <th>Links</th>
+        </tr>
+        {{#commoditiesList}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{name}}</td>
+            <td>{{providerId}}</td>
+            <td>{{price}}</td>
+            <td>
+                {{#categories}}
+                {{.}},
+                {{/categories}}
+            </td>
+            <td>{{rating}}</td>
+            <td>{{inStock}}</td>
+            <td><a href="/commodities/{{id}}">Link</a></td>
+        </tr>
+        {{/commoditiesList}}
+    </table>
+</body>
+</html>

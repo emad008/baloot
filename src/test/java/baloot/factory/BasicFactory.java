@@ -39,6 +39,14 @@ public class BasicFactory {
                 "2000-10-30",
                 "tehran",
                 5
+            ),
+            new User(
+                "shayan",
+                "12345",
+                "shayan8@gmail.com",
+                "2020-10-30",
+                "not-in-tehran",
+                -5
             )
         );
     }

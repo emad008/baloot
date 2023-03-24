@@ -2,7 +2,7 @@ package baloot.exception;
 
 import java.util.Map;
 
-public class EntityNotFound extends RuntimeException {
+public class EntityNotFound extends BalootException {
     private final String tableName;
 
     private final Map<String, Object> fields;

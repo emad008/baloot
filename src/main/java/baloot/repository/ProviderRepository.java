@@ -13,6 +13,12 @@ public class ProviderRepository extends Repository<Provider> {
         super(db);
     }
 
+    public Provider findById(int id) {
+        return this.findInstance(Map.of(
+            "id", id
+        ));
+    }
+
     @Override
     public Table getTable() {
         return this.db.getTable("providers");

@@ -1,4 +1,4 @@
 package baloot.exception;
 
-public class ColumnNotFound extends RuntimeException {
+public class ColumnNotFound extends BalootException {
 }

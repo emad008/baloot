@@ -2,7 +2,7 @@ package baloot.exception;
 
 import baloot.model.Commodity;
 
-public class NoCommodityAvailable extends RuntimeException {
+public class NoCommodityAvailable extends BalootException {
     private final String commodityName;
 
     public NoCommodityAvailable(String commodityName) {

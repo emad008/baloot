@@ -1,4 +1,4 @@
 package baloot.exception;
 
-public class UniqueConstraintException extends RuntimeException {
+public class UniqueConstraintException extends BalootException {
 }
